@@ -6,11 +6,17 @@ function App() {
   const [searchTerm, setSearchTerm] = useState('');
   const [displayText, setDisplayText] = useState('');
   const [showPizzaImage, setShowPizzaImage] = useState(false);
+  const [items, setItems] = useState(['Pizza', 'Burger', 'Pasta', 'spagetti', 'soup']); // Sample items
+  const [filteredItems, setFilteredItems] = useState(items);
 
   const handleSearchChange = (event) => {
     setSearchTerm(event.target.value);
     setDisplayText(event.target.value);
     setShowPizzaImage(event.target.value.toLowerCase() === 'pizza');
+
+    // Filter items based on search term
+    const filtered = items.filter(item => item.toLowerCase().includes(event.target.value.toLowerCase()));
+    setFilteredItems(filtered);
   };
 
   return (
@@ -60,6 +66,23 @@ function App() {
               border-radius: 5px;
               cursor: pointer;
             }
+
+            .filtered-items {
+              display: flex;
+              flex-direction: column;
+              align-items: center;
+              margin-top: 20px;
+            }
+
+            .filtered-item {
+              background-color: #f5f5f5;
+              border: 1px solid #ccc;
+              border-radius: 5px;
+              padding: 10px;
+              margin-bottom: 10px;
+              width: 200px;
+              text-align: center;
+            }
           `}
         </style>
         <div className="search-wrapper">
@@ -79,6 +102,12 @@ function App() {
         <Routes>
           <Route path="/create-profile" element={<ProfileCreation />} />
         </Routes>
+        <div className="filtered-items">
+          <h2>Current Items</h2>
+          {filteredItems.map((item, index) => (
+            <div key={index} className="filtered-item">{item}</div>
+          ))}
+        </div>
       </div>
     </BrowserRouter>
   );
